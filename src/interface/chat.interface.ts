@@ -1,9 +1,9 @@
-
 import mongoose from "mongoose";
-interface chat {
+
+interface Chat {
     user_id: mongoose.Schema.Types.ObjectId;
     bot_id: mongoose.Schema.Types.ObjectId;
     name: string;
 }
 
-export { chat };
+export { Chat };
