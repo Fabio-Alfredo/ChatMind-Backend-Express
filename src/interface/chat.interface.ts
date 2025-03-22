@@ -1,7 +1,8 @@
 
+import mongoose from "mongoose";
 interface chat {
-    user_id: string;
-    bot_id: string;
+    user_id: mongoose.Schema.Types.ObjectId;
+    bot_id: mongoose.Schema.Types.ObjectId;
     name: string;
 }
 
