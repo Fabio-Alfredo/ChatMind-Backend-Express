@@ -1,5 +1,5 @@
-import { currentEnv } from "./src/config/config";
-import { connectDb } from "./src/config/db.config/mongo.config";
+import { currentEnv } from "./src/configs/config";
+import { connectDb } from "./src/configs/db.config/mongo.config";
 import app from "./app";
 
 connectDb();

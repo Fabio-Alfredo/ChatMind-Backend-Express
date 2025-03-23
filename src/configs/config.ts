@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Config } from "../interface/config.interface";
+import { Config } from "../interfaces/config.interface";
 import { Env } from "../types/env.type";
 
 const { PORT, NODE_ENV, MONGO_URI } = process.env;
