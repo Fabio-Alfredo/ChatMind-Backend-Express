@@ -7,6 +7,12 @@ const userSchema = new Schema<User>(
         name: {
             type: String,
             required: true,
+            validate: {
+                validator: (v: string) => {
+                    return /^[a-zA-Z\s]*$/.test(v);
+                },
+                message: (props) => `${props.value} is not a valid name!`
+            }
         },
         email: {
             type: String,
@@ -29,6 +35,12 @@ const userSchema = new Schema<User>(
 
 userSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
+        const password = this.password as string;
+        const passwordRegex = /^[A-Za-z0-9!@#$%&*+]{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+            throw new Error("contraseña invalida debe tener al menos 8 caracteres, una letra mayuscula, un numero y un caracter especial");
+        }
         this.password = await bcrypt.hash(this.password, 10);
     }
     next();
