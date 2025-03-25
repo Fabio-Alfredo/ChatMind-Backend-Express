@@ -12,4 +12,8 @@ userRoutes.post(
     userController.createUser
 );
 
+userRoutes.post(
+    "/login",
+    userController.loginUser
+);
 export default userRoutes;
