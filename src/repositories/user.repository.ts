@@ -1,8 +1,8 @@
 import UserModel from "../domains/models/user.model";
-import { User } from "../interfaces/user.interface";
+import { registerUser, User } from "../interfaces/user.interface";
 import { Schema } from 'mongoose';
 
-export const create = async (user: User): Promise<User> => {
+export const create = async (user: registerUser): Promise<User> => {
     const newUser = await UserModel.create(user);
     return newUser;
 }

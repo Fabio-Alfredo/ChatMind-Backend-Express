@@ -1,10 +1,10 @@
 import * as userRepo from "../repositories/user.repository";
-import { User } from "../interfaces/user.interface";
+import { registerUser, User } from "../interfaces/user.interface";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 
 
-export const create = async (user: User): Promise<User> => {
+export const create = async (user: registerUser): Promise<User> => {
     try {
         const userExist = await userRepo.findByEmail(user.email);
         if (userExist) {
@@ -14,6 +14,7 @@ export const create = async (user: User): Promise<User> => {
         }
 
         const newUser = await userRepo.create(user);
+        console.log(newUser);
         return newUser;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
