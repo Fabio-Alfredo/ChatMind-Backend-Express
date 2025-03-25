@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import * as userService from "../services/user.service";
+import * as userService from "../services/auth.service";
 import { registerUser } from "../interfaces/user.interface";
 import ErrorCodes from '../utils/error/codes/error.codes';
 import createHttpError from 'http-errors';
