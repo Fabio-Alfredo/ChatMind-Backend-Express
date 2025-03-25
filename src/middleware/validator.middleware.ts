@@ -12,7 +12,7 @@ const validatorMiddleware = (req: Request, res: Response, next: NextFunction): v
             success: false,
             errors: errorsMessages
         });
-
+        return;
     }
     next();
 }
