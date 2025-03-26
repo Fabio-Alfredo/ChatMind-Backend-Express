@@ -35,12 +35,6 @@ export const auth = async (user: authUser): Promise<string> => {
 
         const method = AuthFactory.AuthProvider("JWT");
 
-        if (!method) {
-            throw new ServiceError("Internal Server Error",
-                ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
-            );
-        }
-
         const token = method.generateToken({
             _id: existUser._id,
             roles: existUser.roles
