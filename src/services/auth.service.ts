@@ -1,12 +1,11 @@
 import * as userRepo from "../repositories/user.repository";
-import { registerUser, User, authUser } from "../interfaces/user.interface";
+import {RegisterUser, User, AuthUser, Token}from "../interfaces";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { AuthFactory } from "../utils/security/authFactory.security";
-import { Token } from "../interfaces/toke.interface";
 
 
-export const create = async (user: registerUser): Promise<User> => {
+export const create = async (user: RegisterUser): Promise<User> => {
     try {
         const userExist = await userRepo.findByEmail(user.email);
         if (userExist) {
@@ -25,7 +24,7 @@ export const create = async (user: registerUser): Promise<User> => {
     }
 }
 
-export const auth = async (user: authUser): Promise<Token> => {
+export const auth = async (user: AuthUser): Promise<Token> => {
     try {
         const existUser = await userRepo.findByEmail(user.email);
         if (!existUser || !(await existUser.comparePassword(user.password))) {

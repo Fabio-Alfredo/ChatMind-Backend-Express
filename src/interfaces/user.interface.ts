@@ -8,8 +8,8 @@ interface User {
     comparePassword(password: string): Promise<boolean>;
 }
 
-type authUser = Pick<User, "email" | "password">;
-type registerUser = Pick<User, "name" | "email" | "password">;
-type tokenPayload = Pick<User, "_id" | "roles">;
+type AuthUser = Pick<User, "email" | "password">;
+type RegisterUser = Pick<User, "name" | "email" | "password">;
+type TokenPayload = Pick<User, "_id" | "roles">;
 
-export { User, authUser, registerUser, tokenPayload };
+export { User, AuthUser, RegisterUser, TokenPayload };

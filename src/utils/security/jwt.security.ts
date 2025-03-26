@@ -1,10 +1,9 @@
 import { sign, verify } from 'jsonwebtoken';
-import { tokenPayload } from '../../interfaces/user.interface';
-import { Token } from '../../interfaces/toke.interface';
+import {TokenPayload, Token} from "../../interfaces";
 import { currentEnv } from '../../configs/config';
 
 const JWT_STRATEGY = {
-    generateToken: (payload: tokenPayload): Token => {
+    generateToken: (payload: TokenPayload): Token => {
         const token = sign(payload, currentEnv.jwtSecret as string, { expiresIn: "1h" });
         return {
             token,
@@ -12,8 +11,8 @@ const JWT_STRATEGY = {
             type: "Bearer"
         };
     },
-    verifyToken: (token: string): tokenPayload => {
-        const payload = verify(token, currentEnv.jwtSecret as string) as tokenPayload;
+    verifyToken: (token: string): TokenPayload => {
+        const payload = verify(token, currentEnv.jwtSecret as string) as TokenPayload;
         return payload;
     }
 }
