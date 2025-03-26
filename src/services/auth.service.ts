@@ -3,6 +3,7 @@ import { registerUser, User, authUser } from "../interfaces/user.interface";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { AuthFactory } from "../utils/security/authFactory.security";
+import { Token } from "../interfaces/toke.interface";
 
 
 export const create = async (user: registerUser): Promise<User> => {
@@ -24,7 +25,7 @@ export const create = async (user: registerUser): Promise<User> => {
     }
 }
 
-export const auth = async (user: authUser): Promise<string> => {
+export const auth = async (user: authUser): Promise<Token> => {
     try {
         const existUser = await userRepo.findByEmail(user.email);
         if (!existUser || !(await existUser.comparePassword(user.password))) {
