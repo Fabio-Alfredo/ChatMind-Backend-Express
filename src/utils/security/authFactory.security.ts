@@ -1,8 +1,9 @@
 import { JWT_STRATEGY } from "./jwt.security"
+import { authTypes } from "../../types/jwt.type";
 
 const AuthFactory = {
-    AuthProvider: (types: "JWT" | "OAUTH") => {
-        switch (types) {
+    AuthProvider: (option: authTypes) => {
+        switch (option) {
             case "JWT":
                 return JWT_STRATEGY;
             case "OAUTH":
