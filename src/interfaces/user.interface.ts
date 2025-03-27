@@ -2,6 +2,7 @@
 interface User {
     _id: string;
     name: string;
+    authProvider: string;
     email: string;
     password: string;
     roles: string[];
