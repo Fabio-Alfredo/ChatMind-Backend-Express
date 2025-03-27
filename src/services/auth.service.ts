@@ -1,8 +1,8 @@
 import * as userRepo from "../repositories/user.repository";
-import {RegisterUser, User, AuthUser, Token}from "../interfaces";
+import *as authMethods from "../utils/security/jwt.security";
+import { RegisterUser, User, AuthUser, Token, GooglePayload } from "../interfaces";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { AuthFactory } from "../utils/security/authFactory.security";
 
 
 export const create = async (user: RegisterUser): Promise<User> => {
@@ -33,12 +33,10 @@ export const auth = async (user: AuthUser): Promise<Token> => {
             );
         }
 
-        const method = AuthFactory.AuthProvider("JWT");
-
-        const token = method.generateToken({
+        const token = authMethods.generateToken({
             _id: existUser._id,
             roles: existUser.roles
-        });
+        })
 
         return token;
 
