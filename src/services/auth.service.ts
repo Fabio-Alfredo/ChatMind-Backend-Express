@@ -1,6 +1,6 @@
 import * as userRepo from "../repositories/user.repository";
 import *as authMethods from "../utils/security/jwt.security";
-import { RegisterUser, User, AuthUser, Token, GooglePayload } from "../interfaces";
+import { RegisterUser, User, AuthUser, Token, GooglePayload, RegisterGoogleUser } from "../interfaces";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { randomUUID } from "crypto";
@@ -16,7 +16,7 @@ export const create = async (user: RegisterUser): Promise<User> => {
         }
 
         const newUser = await userRepo.create(user);
-        console.log(newUser);
+        
         return newUser;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
@@ -64,10 +64,10 @@ export const googleAuth = async (googleToken: string): Promise<Token> => {
         user = await userRepo.findByEmail(payload.email);
 
         if (!user) {
-            const newUser: RegisterUser = {
+            const newUser: RegisterGoogleUser = {
                 name: payload.name,
                 email: payload.email,
-                password: randomUUID()
+                authProvider: "google",
             }
             user = await userRepo.create(newUser);
         }
