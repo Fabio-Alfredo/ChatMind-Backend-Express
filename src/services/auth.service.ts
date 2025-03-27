@@ -3,7 +3,6 @@ import *as authMethods from "../utils/security/jwt.security";
 import { RegisterUser, User, AuthUser, Token, GooglePayload, RegisterGoogleUser } from "../interfaces";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { randomUUID } from "crypto";
 
 
 export const create = async (user: RegisterUser): Promise<User> => {
@@ -16,7 +15,7 @@ export const create = async (user: RegisterUser): Promise<User> => {
         }
 
         const newUser = await userRepo.create(user);
-        
+
         return newUser;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
@@ -28,7 +27,7 @@ export const create = async (user: RegisterUser): Promise<User> => {
 export const auth = async (user: AuthUser): Promise<Token> => {
     try {
         const existUser = await userRepo.findByEmail(user.email);
-        if (!existUser || !(await existUser.comparePassword(user.password))) {
+        if (!existUser || existUser.authProvider === "google" || !(await existUser.comparePassword(user.password))) {
             throw new ServiceError("Invalid credentials",
                 ErrorCodes.USER.INVALID_CREDENTIALS
             );
