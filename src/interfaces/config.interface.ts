@@ -3,4 +3,5 @@ export interface Config {
    nodeEnv: string;
    mongoUri?: string;
    jwtSecret?: string;
+   googleClientId?: string;
 }
