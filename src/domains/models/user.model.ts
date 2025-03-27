@@ -21,12 +21,20 @@ const userSchema = new Schema<User>(
         },
         password: {
             type: String,
-            required: true,
+            required: function () {
+                return this.authProvider === "local";
+            },
         },
         roles: {
             type: [String],
             default: ["user"],
         },
+        authProvider: {
+            type: String,
+            required: true,
+            enum: ["google", "local"]
+        }
+
     },
     {
         timestamps: true,
@@ -34,7 +42,7 @@ const userSchema = new Schema<User>(
 );
 
 userSchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
+    if (this.isModified("password") && this.authProvider === "local") {
         const password = this.password as string;
         const passwordRegex = /^[A-Za-z0-9!@#$%&*+]{8,}$/;
 
