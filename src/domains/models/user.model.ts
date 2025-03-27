@@ -32,7 +32,8 @@ const userSchema = new Schema<User>(
         authProvider: {
             type: String,
             required: true,
-            enum: ["google", "local"]
+            enum: ["google", "local"],
+            default: "local"
         }
 
     },
