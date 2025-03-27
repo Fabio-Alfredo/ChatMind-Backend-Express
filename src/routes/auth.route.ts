@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as userController from "../controllers/auth.controller";
 import validatorMiddleware from '../middleware/validator.middleware';
-import { registerValidator } from '../validators/auth.validator';
+import { registerValidator, loginValidator } from '../validators/auth.validator';
 
 const userRoutes = Router();
 
@@ -14,6 +14,8 @@ userRoutes.post(
 
 userRoutes.post(
     "/login",
+    loginValidator,
+    validatorMiddleware,
     userController.loginUser
 );
 export default userRoutes;
