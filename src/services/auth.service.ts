@@ -1,8 +1,9 @@
 import * as userRepo from "../repositories/user.repository";
 import *as authMethods from "../utils/security/jwt.security";
-import { RegisterUser, User, AuthUser, Token, GooglePayload, RegisterGoogleUser } from "../interfaces";
+import { RegisterUser, User, AuthUser, Token, RegisterGoogleUser } from "../interfaces";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
+import { AUTH_PROVIDERS } from "../utils/constants/autProvider.constant";
 
 
 export const create = async (user: RegisterUser): Promise<User> => {
@@ -27,7 +28,7 @@ export const create = async (user: RegisterUser): Promise<User> => {
 export const auth = async (user: AuthUser): Promise<Token> => {
     try {
         const existUser = await userRepo.findByEmail(user.email);
-        if (!existUser || existUser.authProvider === "google" || !(await existUser.comparePassword(user.password))) {
+        if (!existUser || existUser.authProvider === AUTH_PROVIDERS.GOOGLE || !(await existUser.comparePassword(user.password))) {
             throw new ServiceError("Invalid credentials",
                 ErrorCodes.USER.INVALID_CREDENTIALS
             );
@@ -66,7 +67,7 @@ export const googleAuth = async (googleToken: string): Promise<Token> => {
             const newUser: RegisterGoogleUser = {
                 name: payload.name,
                 email: payload.email,
-                authProvider: "google",
+                authProvider: AUTH_PROVIDERS.GOOGLE,
             }
             user = await userRepo.create(newUser);
         }

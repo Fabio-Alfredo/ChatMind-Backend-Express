@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { User } from '../../interfaces';
 import bcrypt from 'bcryptjs';
+import { AUTH_PROVIDERS } from '../../utils/constants/autProvider.constant';
 
 const userSchema = new Schema<User>(
     {
@@ -32,7 +33,7 @@ const userSchema = new Schema<User>(
         authProvider: {
             type: String,
             required: true,
-            enum: ["google", "local"],
+            enum: Object.values(AUTH_PROVIDERS),
             default: "local"
         }
 
@@ -43,7 +44,7 @@ const userSchema = new Schema<User>(
 );
 
 userSchema.pre("save", async function (next) {
-    if (this.isModified("password") && this.authProvider === "local") {
+    if (this.isModified("password") && this.authProvider === AUTH_PROVIDERS.LOCAL) {
         const password = this.password as string;
         const passwordRegex = /^[A-Za-z0-9!@#$%&*+]{8,}$/;
 
