@@ -18,4 +18,9 @@ userRoutes.post(
     validatorMiddleware,
     userController.loginUser
 );
+
+userRoutes.post(
+    "/auth/google",
+    userController.googleAuth
+)
 export default userRoutes;
