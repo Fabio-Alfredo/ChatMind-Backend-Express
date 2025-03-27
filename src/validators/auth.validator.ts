@@ -27,6 +27,23 @@ const registerValidator = [
         .bail()
 ]
 
+const loginValidator = [
+    body("email")
+        .exists()
+        .withMessage("Email is required")
+        .isEmail()
+        .withMessage("Email must be a valid email address")
+        .bail(),
+
+    body("password")
+        .exists()
+        .withMessage("password is required")
+        .isString()
+        .withMessage("Password must be a string")
+        .bail()
+]
+
 export {
-    registerValidator
+    registerValidator,
+    loginValidator  
 }
