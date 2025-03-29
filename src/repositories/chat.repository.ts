@@ -1,8 +1,8 @@
 import ChatModel from "../domains/models/chat.model";
-import { Chat, CreteChat } from "../interfaces";
+import { Chat, CreateChat } from "../interfaces";
 import { Schema } from 'mongoose';
 
-export const create = async (chat: CreteChat): Promise<Chat> => {
+export const create = async (chat: CreateChat): Promise<Chat> => {
     const newChat = await ChatModel.create(chat);
     return newChat;
 }
