@@ -32,3 +32,14 @@ export const findChatById = async (id: Schema.Types.ObjectId): Promise<Chat> => 
         )
     }
 }
+
+export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Chat[]> => {
+    try {
+        const chats = await chatRepo.findAllByUserId(userId);
+        return chats || [];
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
