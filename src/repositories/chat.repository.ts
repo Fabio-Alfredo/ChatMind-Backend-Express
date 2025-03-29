@@ -7,7 +7,7 @@ export const create = async (chat: CreateChat): Promise<Chat> => {
     return newChat;
 }
 
-export const findById = async (id: string): Promise<Chat | null> => {
+export const findById = async (id: Schema.Types.ObjectId): Promise<Chat | null> => {
     const chat = await ChatModel.findById(id);
     return chat;
 }
