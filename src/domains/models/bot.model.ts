@@ -21,7 +21,7 @@ const botSchema = new Schema<Bot>(
         },
         apiToken: {
             type: String,
-            required: true,
+            // required: true,
         },
         active: {
             type: Boolean,
