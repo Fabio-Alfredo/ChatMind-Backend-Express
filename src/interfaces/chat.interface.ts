@@ -6,5 +6,5 @@ interface Chat {
     bot_id: mongoose.Schema.Types.ObjectId;
     name: string;
 }
-type creteChat = Pick<Chat, "user_id" | "bot_id" | "name">;
-export { Chat, creteChat };
+type CreteChat = Pick<Chat, "user_id" | "bot_id" | "name">;
+export { Chat, CreteChat };
