@@ -6,7 +6,10 @@ const ErrorCodes = {
         ALREADY_EXISTS: 1000,
         INVALID_CREDENTIALS: 1001,
         INVALID_GOOGLE_TOKEN: 1002,
-    }
+    },
+    CHAT: {
+        NOT_FOUND: 2000,
+    },
 }
 
 export default ErrorCodes;
