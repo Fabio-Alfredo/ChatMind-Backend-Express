@@ -10,6 +10,9 @@ const ErrorCodes = {
     CHAT: {
         NOT_FOUND: 2000,
     },
+    BOT: {
+        NOT_FOUND: 3000,
+    },
 }
 
 export default ErrorCodes;
