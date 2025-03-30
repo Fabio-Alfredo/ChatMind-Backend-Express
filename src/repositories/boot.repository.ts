@@ -11,3 +11,8 @@ export const findById = async (id: Schema.Types.ObjectId): Promise<Bot | null> =
     const bot = await BotModel.findById(id);
     return bot;
 }
+
+export const findByNameAndUrl = async (name: string, url: string): Promise<boolean> => {
+    const bot = await BotModel.findOne({ name, apiURL: url })
+    return bot ? true : false;
+}
