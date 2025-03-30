@@ -21,7 +21,7 @@ const botSchema = new Schema<Bot>(
         },
         apiToken: {
             type: String,
-            // required: true,
+            required: true,
         },
         active: {
             type: Boolean,
@@ -31,7 +31,12 @@ const botSchema = new Schema<Bot>(
     {
         timestamps: true,
     }
-)
+);
+
+
+//script apiToken to be hashed before saving
+
+
 
 const BotModel = model<Bot>('Bot', botSchema);
 
