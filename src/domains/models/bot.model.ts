@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { Bot } from "../../interfaces";
+import { generateHash, compareHash } from "../../utils/security/ecript.security";
 
 const botSchema = new Schema<Bot>(
     {
@@ -22,6 +23,7 @@ const botSchema = new Schema<Bot>(
         apiToken: {
             type: String,
             required: true,
+            set: generateHash
         },
         active: {
             type: Boolean,
@@ -34,8 +36,9 @@ const botSchema = new Schema<Bot>(
 );
 
 
-//script apiToken to be hashed before saving
-
+botSchema.methods.compareApiToken = async function (token: string): Promise<String> {
+    return await compareHash(token);
+}
 
 
 const BotModel = model<Bot>('Bot', botSchema);
