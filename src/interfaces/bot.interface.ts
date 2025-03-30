@@ -8,6 +8,7 @@ interface Bot {
     apiURL: string;
     apiToken?: string;
     active: boolean;
+    compareApiToken: (token: string) => Promise<string>;
 }
 
 type CreateBot = Pick<Bot, "name" | "description" | "model" | "apiURL" >;
