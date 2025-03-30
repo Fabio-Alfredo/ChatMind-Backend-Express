@@ -4,5 +4,5 @@ export interface Config {
    mongoUri?: string;
    jwtSecret?: string;
    googleClientId?: string;
-   encryptKey?: string;
+   encryptKey: string;
 }
