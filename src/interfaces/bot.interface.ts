@@ -11,5 +11,5 @@ interface Bot {
     compareApiToken: (token: string) => Promise<string>;
 }
 
-type CreateBot = Pick<Bot, "name" | "description" | "model" | "apiURL" >;
+type CreateBot = Pick<Bot, "name" | "description" | "model" | "apiURL" | "apiToken">;
 export { Bot, CreateBot };
