@@ -12,6 +12,7 @@ const ErrorCodes = {
     },
     BOT: {
         NOT_FOUND: 3000,
+        ALREADY_EXISTS_BOT: 3001,
     },
 }
 
