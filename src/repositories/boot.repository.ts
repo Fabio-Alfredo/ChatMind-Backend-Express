@@ -12,7 +12,7 @@ export const findById = async (id: Schema.Types.ObjectId): Promise<Bot | null> =
     return bot;
 }
 
-export const findByNameAndUrl = async (name: string, url: string): Promise<boolean> => {
+export const existBot = async (name: string, url: string): Promise<boolean> => {
     const bot = await BotModel.findOne({ name, apiURL: url })
     return bot ? true : false;
 }
