@@ -4,4 +4,4 @@ export * from "./message.interface";
 export * from "./config.interface";
 export * from "./chat.interface";
 export * from "./bot.interface";
-
+export * from "./request.interface";
