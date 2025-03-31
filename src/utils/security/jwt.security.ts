@@ -1,8 +1,8 @@
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify, TokenExpiredError } from 'jsonwebtoken';
 import { TokenPayload, Token, GooglePayload } from "../../interfaces";
 import { currentEnv } from '../../configs/config';
 import client from '../../configs/google/googleAuth.config';
-
+import { TokenValid } from '../../interfaces';
 
 export const generateToken = (payload: TokenPayload): Token => {
     const token = sign(payload, currentEnv.jwtSecret as string, { expiresIn: "1h" });
@@ -12,9 +12,17 @@ export const generateToken = (payload: TokenPayload): Token => {
         type: "Bearer"
     };
 }
-export const verifyToken = (token: string): TokenPayload => {
-    const payload = verify(token, currentEnv.jwtSecret as string) as TokenPayload;
-    return payload;
+
+export const verifyToken = (token: string): TokenValid => {
+    try {
+        const payload = verify(token, currentEnv.jwtSecret as string) as TokenPayload;
+        return { valid: true, payload };
+    } catch (e: any) {
+        console.error(e);
+        if (e instanceof TokenExpiredError)
+            return { valid: false, message: "Token expired" };
+        return { valid: false, message: "Invalid token" };
+    }
 }
 
 export const verifyGoogleAuth = async (token: string): Promise<GooglePayload> => {
