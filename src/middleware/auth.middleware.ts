@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
 import { verifyToken } from "../utils/security/jwt.security";
-import { TokenPayload } from "../interfaces";
-
-declare module "express-serve-static-core" {
-    interface Request {
-        dataUser: TokenPayload;
-    }
-}
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
     try {
