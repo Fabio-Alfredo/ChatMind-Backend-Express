@@ -1,17 +1,17 @@
 import * as BotRepo from "../repositories/boot.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { Bot, CreateBot } from "../interfaces";
+import { Bot, CreateBot, TokenPayload } from "../interfaces";
 import { Schema } from "mongoose";
 
-export const create = async (bot: CreateBot): Promise<Bot> => {
+export const create = async (bot: CreateBot, user:TokenPayload): Promise<Bot> => {
     try {
         const existBot: boolean = await BotRepo.existBot(bot.name, bot.apiURL);
         if (existBot) {
             throw new ServiceError("There is already a bot with that name or URL", ErrorCodes.BOT.ALREADY_EXISTS_BOT)
         }
 
-        const newBot: Bot = await BotRepo.create(bot);
+        const newBot: Bot = await BotRepo.create(bot, user._id);
 
         return newBot;
     } catch (e: any) {
