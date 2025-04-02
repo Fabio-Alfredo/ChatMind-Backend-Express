@@ -23,15 +23,14 @@ const botSchema = new Schema<Bot>(
         apiToken: {
             type: String,
             required: true,
-            set: generateHash
         },
         active: {
             type: Boolean,
             default: true,
         },
-        createBy:{
-            type:Schema.Types.ObjectId,
-            ref:'User',
+        createBy: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true
         }
     },
@@ -40,10 +39,17 @@ const botSchema = new Schema<Bot>(
     }
 );
 
+botSchema.pre("save", async function (next) {
+    if (this.isModified("apiToken")) {
+        this.apiToken = generateHash(this.apiToken);
+    }
+    next();
+
+})
 
 botSchema.methods.compareApiToken = async function (token: string): Promise<String> {
-    return await compareHash(token);
-}
+        return await compareHash(token);
+    }
 
 
 const BotModel = model<Bot>('Bot', botSchema);
