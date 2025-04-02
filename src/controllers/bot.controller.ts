@@ -1,7 +1,7 @@
 import * as botService from "../services/bot.service";
 import createHttpError from "http-errors";
 import { Request, Response, NextFunction } from "express";
-import { Bot, CreateBot } from "../interfaces";
+import { Bot, CreateBot, TokenPayload } from "../interfaces";
 import { Schema } from "mongoose";
 import { responseHandler } from "../handlers/response.handler";
 
@@ -9,7 +9,8 @@ export const createBot = async (req: Request<{}, {}, CreateBot>, res: Response, 
 
     try {
         const bot: CreateBot = req.body;
-        const newBot: Bot = await botService.create(bot);
+        const user:TokenPayload = req.dataUser;
+        const newBot: Bot = await botService.create(bot, user);
         return responseHandler(res, "created bot", 201, newBot);
     } catch (e: any) {
         switch (e.code) {
