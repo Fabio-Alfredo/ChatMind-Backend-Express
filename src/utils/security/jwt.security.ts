@@ -18,7 +18,6 @@ export const verifyToken = (token: string): TokenValid => {
         const payload = verify(token, currentEnv.jwtSecret as string) as TokenPayload;
         return { valid: true, payload };
     } catch (e: any) {
-        console.error(e);
         if (e instanceof TokenExpiredError)
             return { valid: false, message: "Token expired" };
         return { valid: false, message: "Invalid token" };
