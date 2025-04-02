@@ -1,6 +1,7 @@
+import { Schema } from "mongoose";
 
 interface User {
-    _id: string;
+    _id: Schema.Types.ObjectId;
     name: string;
     authProvider: string;
     email: string;
