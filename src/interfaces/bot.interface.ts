@@ -6,7 +6,7 @@ interface Bot {
     description: string;
     model: string;
     apiURL: string;
-    apiToken?: string;
+    apiToken: string;
     active: boolean;
     createBy: mongoose.Schema.Types.ObjectId;
     compareApiToken: (token: string) => Promise<string>;
