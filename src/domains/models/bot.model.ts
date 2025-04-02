@@ -29,6 +29,11 @@ const botSchema = new Schema<Bot>(
             type: Boolean,
             default: true,
         },
+        createBy:{
+            type:Schema.Types.ObjectId,
+            ref:'User',
+            required: true
+        }
     },
     {
         timestamps: true,
