@@ -19,6 +19,11 @@ const messageSchema = new Schema<Message>(
             type: String,
             required: true,
         },
+        sender:{
+            type:String,
+            enum: ["user", "bot"],
+            required: true,
+        }
     },
     {
         timestamps: true,
