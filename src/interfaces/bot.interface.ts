@@ -13,4 +13,5 @@ interface Bot {
 }
 
 type CreateBot = Pick<Bot, "name" | "description" | "model" | "apiURL" | "apiToken">;
-export { Bot, CreateBot };
+type UpdateBot = Partial<Omit<Bot, "_id" | "createBy"| "compareApiToken">>;
+export { Bot, CreateBot, UpdateBot };
