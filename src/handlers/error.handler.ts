@@ -5,6 +5,6 @@ interface CustomError extends Error {
 }
 
 export const errorHander = (err: CustomError, req: Request, res: Response, next: NextFunction):void=> {
-    console.error(err.message);
+    console.error(err);
     res.status(err.status || 500).json({ message: err.message || "Internal Server Error" });
 }

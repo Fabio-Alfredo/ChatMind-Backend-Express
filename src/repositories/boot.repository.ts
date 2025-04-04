@@ -9,7 +9,7 @@ export const create = async (bot: CreateBot, createBy:Schema.Types.ObjectId): Pr
 }
 
 export const findById = async (id: Schema.Types.ObjectId): Promise<Bot | null> => {
-    const bot = await BotModel.findById(id);
+    const bot = await BotModel.findById(id).populate("createBy", "name email");
     return bot;
 }
 
