@@ -1,6 +1,7 @@
 import cripto from "crypto";
 import { currentEnv } from "../../configs/config";
 
+//TODO: Arreglar el encriptado y desencriptado para que soke
 export const generateHash = (plainText: string): string => {
     //crea un vector de 16 bytes aleatorio
     const iv = cripto.randomBytes(16);
@@ -11,14 +12,14 @@ export const generateHash = (plainText: string): string => {
     //finaliza el cifrado y lo convierte a hex
     cipherText += cipher.final("hex");
     //retorna el iv, el texto cifrado y la etiqueta de autenticación separados por :
-    return iv.toString() + cipherText.toString();
+    return `${iv.toString("hex")}:${cipherText}`;
 };
 
 export const compareHash = (cryptText: string): string => {
     //separa el iv, el texto cifrado y la etiqueta de autenticación
     const [iv, cipherText] = cryptText.split(":");
     //crea un objeto de descifrado con el algoritmo aes-256-ocb
-    const decipher = cripto.createDecipheriv("aes-256-ocb", currentEnv.encryptKey, Buffer.from(iv, "hex"));
+    const decipher = cripto.createDecipheriv("aes-256-cbc", currentEnv.encryptKey, Buffer.from(iv, "hex"));
     //descifra el texto cifrado y lo convierte a utf8
     let plainText = decipher.update(cipherText, "hex", "utf8");
     //finaliza el descifrado y lo convierte a utf8
