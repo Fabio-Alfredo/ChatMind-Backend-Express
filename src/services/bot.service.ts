@@ -1,10 +1,10 @@
 import * as BotRepo from "../repositories/boot.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { Bot, CreateBot, TokenPayload } from "../interfaces";
+import { Bot, CreateBot, TokenPayload, UpdateBot } from "../interfaces";
 import { Schema } from "mongoose";
 
-export const create = async (bot: CreateBot, user:TokenPayload): Promise<Bot> => {
+export const create = async (bot: CreateBot, user: TokenPayload): Promise<Bot> => {
     try {
         const existBot: boolean = await BotRepo.existBot(bot.name, bot.apiURL);
         if (existBot) {
@@ -30,6 +30,56 @@ export const findBotById = async (id: Schema.Types.ObjectId): Promise<Bot> => {
             );
         }
         return bot;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const findAll = async (): Promise<Bot[]> => {
+    try {
+        const bots: Bot[] = await BotRepo.findAll();
+        if (!bots) {
+            throw new ServiceError("Bots not found",
+                ErrorCodes.BOT.NOT_FOUND
+            );
+        }
+        return bots;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const updateBot = async (id: Schema.Types.ObjectId, bot: UpdateBot): Promise<Bot> => {
+    try {
+        const updatedBot: Bot | null = await BotRepo.updateBot(id, bot);
+        if (!updatedBot) {
+            throw new ServiceError("Bot not found",
+                ErrorCodes.BOT.NOT_FOUND
+            );
+        }
+        return updatedBot;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const desactivateBot = async (id: Schema.Types.ObjectId): Promise<boolean> => {
+    try {
+        const existBot: Bot | null = await BotRepo.findById(id);
+        if (!existBot) {
+            throw new ServiceError("Bot not found",
+                ErrorCodes.BOT.NOT_FOUND
+            );
+        }
+        const desactivateBot: boolean = await BotRepo.desactivateBot(id);
+
+        return desactivateBot;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
