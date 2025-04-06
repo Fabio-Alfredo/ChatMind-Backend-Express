@@ -32,4 +32,23 @@ chatRoutes.get(
     chatController.findAllByUserId
 );
 
+chatRoutes.put(
+    "/update/:id",
+    authMiddleware,
+    roleMiddleware(["user"]),
+    findByIdValidator,
+    updateValidator,
+    validatorMiddleware,
+    chatController.updateChat
+);
+chatRoutes.delete(
+    "/delete/:id",
+    authMiddleware,
+    roleMiddleware(["user"]),
+    findByIdValidator,
+    validatorMiddleware,
+    chatController.deleteChat
+);
+
+
 export default chatRoutes;
