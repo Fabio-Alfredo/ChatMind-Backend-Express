@@ -67,3 +67,20 @@ export const updateChat = async (id: string, name: string): Promise<boolean> => 
         )
     }
 }
+
+export const deleteChat = async (id: string): Promise<boolean> => {
+    try {
+        const chat: Chat | null = await chatRepo.findById(id);
+        if (!chat) {
+            throw new ServiceError("Chat not found",
+                ErrorCodes.CHAT.NOT_FOUND
+            );
+        }
+        const deletedChat = await chatRepo.deleteChat(id);
+        return deletedChat;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
