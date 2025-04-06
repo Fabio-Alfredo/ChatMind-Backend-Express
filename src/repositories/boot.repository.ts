@@ -1,5 +1,5 @@
 import BotModel from "../domains/models/bot.model";
-import { Bot, CreateBot } from "../interfaces";
+import { Bot, CreateBot, UpdateBot } from "../interfaces";
 import { Schema } from 'mongoose';
 
 export const create = async (bot: CreateBot, createBy: Schema.Types.ObjectId): Promise<Bot> => {
@@ -18,7 +18,7 @@ export const existBot = async (name: string, url: string): Promise<boolean> => {
     return bot ? true : false;
 }
 
-export const updateBot = async (id: Schema.Types.ObjectId, bot: CreateBot): Promise<Bot | null> => {
+export const updateBot = async (id: Schema.Types.ObjectId, bot: UpdateBot): Promise<Bot | null> => {
     const updateBot = await BotModel.findOneAndUpdate({ _id: id }, { $set: bot }, { new: true });
     return updateBot;
 }
@@ -28,7 +28,7 @@ export const findAll = async (): Promise<Bot[]> => {
     return bots;
 }
 
-export const desactivateBot = async (id: Schema.Types.ObjectId): Promise<Bot | null> => {
-    const bot = await BotModel.findByIdAndUpdate(id, { active: false }, { new: true });
-    return bot;
+export const desactivateBot = async (id: Schema.Types.ObjectId): Promise<boolean> => {
+    await BotModel.updateOne({ _id: id }, { $set: { isActive: false } }, { new: true });
+    return true;
 }
