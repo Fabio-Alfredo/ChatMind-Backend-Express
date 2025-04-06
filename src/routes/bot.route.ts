@@ -35,4 +35,12 @@ router.put(
     botController.updateBot
 );
 
+router.patch(
+    "desactivate/:id",
+    authMiddleware,
+    findByIdValidator,
+    validatorMiddleware,
+    botController.desactivateBot
+)
+
 export default router;
