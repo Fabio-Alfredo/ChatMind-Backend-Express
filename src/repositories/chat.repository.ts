@@ -17,3 +17,12 @@ export const findAllByUserId = async (userId: string): Promise<Chat[]> => {
     return chats;
 }
 
+export const findByName = async (name: string): Promise<Chat | null> => {
+    const chat = await ChatModel.findOne({ name });
+    return chat;
+}
+
+export const updateChat = async (id: string, name: string): Promise<boolean> => {
+    const chat = await ChatModel.findByIdAndUpdate(id, { name }, { new: true });
+    return !!chat;
+}
