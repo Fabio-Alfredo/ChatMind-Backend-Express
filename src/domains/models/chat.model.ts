@@ -17,6 +17,13 @@ const chatSchema = new Schema<Chat>(
             type: String,
             required: true,
         },
+        messages: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Message',
+                default: [],
+            }
+        ]
     },
     {
         timestamps: true,
