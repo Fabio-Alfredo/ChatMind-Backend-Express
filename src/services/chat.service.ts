@@ -2,6 +2,7 @@ import * as chatRepo from "../repositories/chat.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat } from "../interfaces";
+import { execPath } from "process";
 
 export const creteChat = async (chat: CreateChat): Promise<Chat> => {
     try {
@@ -22,7 +23,7 @@ export const creteChat = async (chat: CreateChat): Promise<Chat> => {
 
 export const findChatById = async (id: string): Promise<Chat> => {
     try {
-        const chat = await chatRepo.findById(id);
+        const chat: Chat | null = await chatRepo.findById(id);
         if (!chat) {
             throw new ServiceError("Chat not found",
                 ErrorCodes.CHAT.NOT_FOUND
@@ -40,8 +41,26 @@ export const findChatById = async (id: string): Promise<Chat> => {
 export const findAllByUserId = async (userId: string): Promise<Chat[]> => {
     try {
         // Check if userId is a valid ObjectId
-        const chats = await chatRepo.findAllByUserId(userId);
-        return chats || [];
+        const chats: Chat[] = await chatRepo.findAllByUserId(userId);
+        return chats;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const updateChat = async (id: string, name: string): Promise<boolean> => {
+    try {
+        const chat: Chat | null = await chatRepo.findById(id);
+        if (!chat) {
+            throw new ServiceError("Chat not found",
+                ErrorCodes.CHAT.NOT_FOUND
+            );
+        }
+
+        const updated = await chatRepo.updateChat(id, name);
+        return updated;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
