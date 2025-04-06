@@ -4,7 +4,7 @@ import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat } from "../interfaces";
 import { Schema } from "mongoose";
 
-export const creteChat = async (chat: CreateChat): Promise<Chat> => {
+export const creteChat = async (chat: CreateChat, user:Schema.Types.ObjectId): Promise<Chat> => {
     try {
         const existingChat: Chat | null = await chatRepo.findByName(chat.name);
         if (existingChat) {
@@ -12,7 +12,7 @@ export const creteChat = async (chat: CreateChat): Promise<Chat> => {
                 ErrorCodes.CHAT.ALREADY_EXISTS
             );
         }
-        const newChat = await chatRepo.create(chat);
+        const newChat = await chatRepo.create(chat, user);
         return newChat;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
