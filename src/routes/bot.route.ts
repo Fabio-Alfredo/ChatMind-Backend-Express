@@ -1,6 +1,6 @@
 import * as botController from '../controllers/bot.controller';
 import { Router } from 'express';
-import { createValidator } from '../validators/bot.validator';
+import { createValidator, updateValidator, findByIdValidator } from '../validators/bot.validator';
 import validatorMiddleware from '../middleware/validator.middleware';
 import { authMiddleware } from '../middleware/auth.middleware';
 
@@ -13,13 +13,25 @@ router.post(
     validatorMiddleware,
     botController.createBot
 );
-router.get('/:id',
+router.get(
+    '/:id',
     authMiddleware,
-    botController.findBotById);
-router.get('/', botController.findAll);
+    findByIdValidator,
+    validatorMiddleware,
+    botController.findBotById
+);
+
+router.get(
+    '/',
+    authMiddleware,
+    botController.findAll
+);
 router.put(
     '/:id',
     authMiddleware,
+    findByIdValidator,
+    createValidator,
+    validatorMiddleware,
     botController.updateBot
 );
 
