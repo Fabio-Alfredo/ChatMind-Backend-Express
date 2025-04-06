@@ -13,6 +13,14 @@ router.post(
     validatorMiddleware,
     botController.createBot
 );
-router.get('/:id', botController.findBotById);
+router.get('/:id',
+    authMiddleware,
+    botController.findBotById);
+router.get('/', botController.findAll);
+router.put(
+    '/:id',
+    authMiddleware,
+    botController.updateBot
+);
 
 export default router;

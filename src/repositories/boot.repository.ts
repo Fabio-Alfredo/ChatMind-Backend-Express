@@ -8,7 +8,7 @@ export const create = async (bot: CreateBot, createBy: Schema.Types.ObjectId): P
     return newBot;
 }
 
-export const findById = async (id: Schema.Types.ObjectId): Promise<Bot | null> => {
+export const findById = async (id: string): Promise<Bot | null> => {
     const bot = await BotModel.findById(id).populate("createBy", "name email");
     return bot;
 }
@@ -18,7 +18,7 @@ export const existBot = async (name: string, url: string): Promise<boolean> => {
     return bot ? true : false;
 }
 
-export const updateBot = async (id: Schema.Types.ObjectId, bot: UpdateBot): Promise<Bot | null> => {
+export const updateBot = async (id: string, bot: UpdateBot): Promise<Bot | null> => {
     const updateBot = await BotModel.findOneAndUpdate({ _id: id }, { $set: bot }, { new: true });
     return updateBot;
 }
@@ -28,7 +28,7 @@ export const findAll = async (): Promise<Bot[]> => {
     return bots;
 }
 
-export const desactivateBot = async (id: Schema.Types.ObjectId): Promise<boolean> => {
+export const desactivateBot = async (id: string): Promise<boolean> => {
     await BotModel.updateOne({ _id: id }, { $set: { isActive: false } }, { new: true });
     return true;
 }

@@ -30,9 +30,9 @@ export const createBot = async (req: Request<{}, {}, CreateBot>, res: Response, 
 }
 
 
-export const findBotById = async (req: Request<{ id: Schema.Types.ObjectId }>, res: Response, next: NextFunction): Promise<void> => {
+export const findBotById = async (req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const botId: Schema.Types.ObjectId = req.params.id;
+        const botId: string = req.params.id;
         const bot: Bot = await botService.findBotById(botId);
         return responseHandler(res, "found bot", 200, bot);
     } catch (e: any) {
@@ -67,9 +67,9 @@ export const findAll = async (req: Request, res: Response, next: NextFunction): 
     }
 }
 
-export const updateBot = async (req: Request<{ id: Schema.Types.ObjectId }, {}, UpdateBot>, res: Response, next: NextFunction): Promise<void> => {
+export const updateBot = async (req: Request<{ id: string }, {}, UpdateBot>, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const botId: Schema.Types.ObjectId = req.params.id;
+        const botId: string = req.params.id;
         const bot: UpdateBot = req.body;
         const updatedBot: Bot = await botService.updateBot(botId, bot);
         return responseHandler(res, "updated bot", 200, updatedBot);
@@ -87,9 +87,9 @@ export const updateBot = async (req: Request<{ id: Schema.Types.ObjectId }, {}, 
     }
 }
 
-export const desactivateBot = async (req: Request<{ id: Schema.Types.ObjectId }, {}, {}>, res: Response, next: NextFunction): Promise<void> => {
+export const desactivateBot = async (req: Request<{ id: string }, {}, {}>, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const botId: Schema.Types.ObjectId = req.params.id;
+        const botId: string = req.params.id;
         await botService.desactivateBot(botId);
         return responseHandler(res, "desactivated bot", 200, {});
     } catch (e: any) {

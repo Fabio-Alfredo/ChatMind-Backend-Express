@@ -21,7 +21,7 @@ export const create = async (bot: CreateBot, user: TokenPayload): Promise<Bot> =
     }
 }
 
-export const findBotById = async (id: Schema.Types.ObjectId): Promise<Bot> => {
+export const findBotById = async (id:string): Promise<Bot> => {
     try {
         const bot: Bot | null = await BotRepo.findById(id);
         if (!bot) {
@@ -53,7 +53,7 @@ export const findAll = async (): Promise<Bot[]> => {
     }
 }
 
-export const updateBot = async (id: Schema.Types.ObjectId, bot: UpdateBot): Promise<Bot> => {
+export const updateBot = async (id: string, bot: UpdateBot): Promise<Bot> => {
     try {
         const updatedBot: Bot | null = await BotRepo.updateBot(id, bot);
         if (!updatedBot) {
@@ -69,7 +69,7 @@ export const updateBot = async (id: Schema.Types.ObjectId, bot: UpdateBot): Prom
     }
 }
 
-export const desactivateBot = async (id: Schema.Types.ObjectId): Promise<boolean> => {
+export const desactivateBot = async (id: string): Promise<boolean> => {
     try {
         const existBot: Bot | null = await BotRepo.findById(id);
         if (!existBot) {
