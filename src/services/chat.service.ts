@@ -2,11 +2,15 @@ import * as chatRepo from "../repositories/chat.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat } from "../interfaces";
-import { Schema } from "mongoose";
 
 export const creteChat = async (chat: CreateChat): Promise<Chat> => {
     try {
-        //TODO: Check if the chat already exists
+        const existingChat: Chat | null = await chatRepo.findByName(chat.name);
+        if (existingChat) {
+            throw new ServiceError("Chat already exists",
+                ErrorCodes.CHAT.ALREADY_EXISTS
+            );
+        }
         const newChat = await chatRepo.create(chat);
         return newChat;
     } catch (e: any) {
@@ -16,7 +20,7 @@ export const creteChat = async (chat: CreateChat): Promise<Chat> => {
     }
 }
 
-export const findChatById = async (id: Schema.Types.ObjectId): Promise<Chat> => {
+export const findChatById = async (id: string): Promise<Chat> => {
     try {
         const chat = await chatRepo.findById(id);
         if (!chat) {
@@ -33,8 +37,9 @@ export const findChatById = async (id: Schema.Types.ObjectId): Promise<Chat> => 
     }
 }
 
-export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Chat[]> => {
+export const findAllByUserId = async (userId: string): Promise<Chat[]> => {
     try {
+        // Check if userId is a valid ObjectId
         const chats = await chatRepo.findAllByUserId(userId);
         return chats || [];
     } catch (e: any) {
