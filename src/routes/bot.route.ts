@@ -40,7 +40,7 @@ router.put(
 );
 
 router.patch(
-    "desactivate/:id",
+    "/desactivate/:id",
     authMiddleware,
     roleMiddleware(["admin"]),
     findByIdValidator,
