@@ -26,3 +26,8 @@ export const updateChat = async (id: string, name: string): Promise<boolean> => 
     const chat = await ChatModel.findByIdAndUpdate(id, { name }, { new: true });
     return !!chat;
 }
+
+export const deleteChat = async (id: string): Promise<boolean> => {
+    const chat = await ChatModel.findByIdAndDelete(id);
+    return !!chat;
+}
