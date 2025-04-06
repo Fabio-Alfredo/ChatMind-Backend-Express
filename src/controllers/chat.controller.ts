@@ -65,3 +65,42 @@ export const findAllByUserId = async (req: Request, res: Response, next: NextFun
         }
     }
 }
+
+export const updateChat = async (req: Request<{ id: string }, {}, { name: string }>, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const chatId: string = req.params.id;
+        const name: string = req.body.name;
+        const updated: boolean = await chatService.updateChat(chatId, name);
+        return responseHandler(res, "updated chat", 200, updated);
+    } catch (e: any) {
+        switch (e.code) {
+            case "CHAT_NOT_FOUND":
+                next(createHttpError(404, e.message));
+                break;
+            case "INTERNAL_SERVER_ERROR":
+                next(createHttpError(500, e.message));
+                break;
+            default:
+                next(e);
+        }
+    }
+}
+
+export const deleteChat = async (req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const chatId: string = req.params.id;
+        const deleted: boolean = await chatService.deleteChat(chatId);
+        return responseHandler(res, "deleted chat", 200, deleted);
+    } catch (e: any) {
+        switch (e.code) {
+            case "CHAT_NOT_FOUND":
+                next(createHttpError(404, e.message));
+                break;
+            case "INTERNAL_SERVER_ERROR":
+                next(createHttpError(500, e.message));
+                break;
+            default:
+                next(e);
+        }
+    }
+}
