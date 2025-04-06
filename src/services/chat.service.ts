@@ -2,6 +2,7 @@ import * as chatRepo from "../repositories/chat.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat } from "../interfaces";
+import { Schema } from "mongoose";
 
 export const creteChat = async (chat: CreateChat): Promise<Chat> => {
     try {
@@ -37,7 +38,7 @@ export const findChatById = async (id: string): Promise<Chat> => {
     }
 }
 
-export const findAllByUserId = async (userId: string): Promise<Chat[]> => {
+export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Chat[]> => {
     try {
         // Check if userId is a valid ObjectId
         const chats: Chat[] = await chatRepo.findAllByUserId(userId);

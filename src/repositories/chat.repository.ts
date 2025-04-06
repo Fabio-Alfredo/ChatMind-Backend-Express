@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import ChatModel from "../domains/models/chat.model";
 import { Chat, CreateChat } from "../interfaces";
 
@@ -11,7 +12,7 @@ export const findById = async (id: string): Promise<Chat | null> => {
     return chat;
 }
 
-export const findAllByUserId = async (userId: string): Promise<Chat[]> => {
+export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Chat[]> => {
     const chats = await ChatModel.find({ user_id: userId });
     return chats;
 }
