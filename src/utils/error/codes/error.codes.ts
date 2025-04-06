@@ -9,6 +9,7 @@ const ErrorCodes = {
     },
     CHAT: {
         NOT_FOUND: 2000,
+        ALREADY_EXISTS: 2001,
     },
     BOT: {
         NOT_FOUND: 3000,
