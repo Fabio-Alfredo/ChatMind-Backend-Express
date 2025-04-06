@@ -8,7 +8,8 @@ import { Schema } from 'mongoose';
 export const createChat = async (req: Request<{}, {}, CreateChat>, res: Response, next: NextFunction): Promise<void> => {
     try {
         const chat: CreateChat = req.body;
-        const newChat: Chat = await chatService.creteChat(chat);
+        const userId: Schema.Types.ObjectId = req.dataUser._id;
+        const newChat: Chat = await chatService.creteChat(chat, userId);
         return responseHandler(res, "created chat", 201, newChat);
     } catch (e: any) {
         switch (e.code) {
