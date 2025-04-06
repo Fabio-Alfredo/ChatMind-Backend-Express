@@ -2,7 +2,6 @@ import * as chatRepo from "../repositories/chat.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat } from "../interfaces";
-import { execPath } from "process";
 
 export const creteChat = async (chat: CreateChat): Promise<Chat> => {
     try {
