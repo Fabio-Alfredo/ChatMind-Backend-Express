@@ -1,5 +1,5 @@
 import * as chatRepo from "../repositories/chat.repository";
-import { findById } from "../repositories/boot.repository";
+import { findBotById } from "./bot.service";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat, UpdateChat } from "../interfaces";
@@ -61,7 +61,7 @@ export const updateChat = async (id: string, newChat: UpdateChat): Promise<boole
         }
 
         if (newChat.bot_id)
-            await findById(newChat.bot_id.toString());
+            await findBotById(newChat.bot_id.toString());
 
         const updated = await chatRepo.updateChat(id, newChat);
         return updated;
