@@ -2,7 +2,7 @@ import * as botService from "../services/bot.service";
 import createHttpError from "http-errors";
 import { Request, Response, NextFunction } from "express";
 import { Bot, CreateBot, TokenPayload, UpdateBot } from "../interfaces";
-import { Schema } from "mongoose";
+import ErrorCodes from "../utils/error/codes/error.codes";
 import { responseHandler } from "../handlers/response.handler";
 
 export const createBot = async (req: Request<{}, {}, CreateBot>, res: Response, next: NextFunction): Promise<void> => {
@@ -14,13 +14,13 @@ export const createBot = async (req: Request<{}, {}, CreateBot>, res: Response, 
         return responseHandler(res, "created bot", 201, newBot);
     } catch (e: any) {
         switch (e.code) {
-            case "BOT_NOT_FOUND":
+            case ErrorCodes.BOT.NOT_FOUND:
                 next(createHttpError(404, e.message));
                 break;
-            case "BOT_ALREADY_EXISTS":
+            case ErrorCodes.BOT.ALREADY_EXISTS_BOT:
                 next(createHttpError(409, e.message));
                 break;
-            case "INTERNAL_SERVER_ERROR":
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
                 next(createHttpError(500, e.message));
                 break;
             default:
@@ -37,10 +37,10 @@ export const findBotById = async (req: Request<{ id: string }>, res: Response, n
         return responseHandler(res, "found bot", 200, bot);
     } catch (e: any) {
         switch (e.code) {
-            case "BOT_NOT_FOUND":
+            case ErrorCodes.BOT.NOT_FOUND:
                 next(createHttpError(404, e.message));
                 break;
-            case "INTERNAL_SERVER_ERROR":
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
                 next(createHttpError(500, e.message));
                 break;
             default:
@@ -55,10 +55,10 @@ export const findAll = async (req: Request, res: Response, next: NextFunction): 
         return responseHandler(res, "found bots", 200, bots);
     } catch (e: any) {
         switch (e.code) {
-            case "BOT_NOT_FOUND":
+            case ErrorCodes.BOT.NOT_FOUND:
                 next(createHttpError(404, e.message));
                 break;
-            case "INTERNAL_SERVER_ERROR":
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
                 next(createHttpError(500, e.message));
                 break;
             default:
@@ -75,10 +75,10 @@ export const updateBot = async (req: Request<{ id: string }, {}, UpdateBot>, res
         return responseHandler(res, "updated bot", 200, updatedBot);
     } catch (e: any) {
         switch (e.code) {
-            case "BOT_NOT_FOUND":
+            case ErrorCodes.BOT.NOT_FOUND:
                 next(createHttpError(404, e.message));
                 break;
-            case "INTERNAL_SERVER_ERROR":
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
                 next(createHttpError(500, e.message));
                 break;
             default:
@@ -94,10 +94,10 @@ export const desactivateBot = async (req: Request<{ id: string }, {}, {}>, res: 
         return responseHandler(res, "desactivated bot", 200, {});
     } catch (e: any) {
         switch (e.code) {
-            case "BOT_NOT_FOUND":
+            case ErrorCodes.BOT.NOT_FOUND:
                 next(createHttpError(404, e.message));
                 break;
-            case "INTERNAL_SERVER_ERROR":
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
                 next(createHttpError(500, e.message));
                 break;
             default:
