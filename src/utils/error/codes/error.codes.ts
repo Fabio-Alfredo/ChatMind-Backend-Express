@@ -6,6 +6,7 @@ const ErrorCodes = {
         ALREADY_EXISTS: 1000,
         INVALID_CREDENTIALS: 1001,
         INVALID_GOOGLE_TOKEN: 1002,
+        NOT_FOUND: 1003,
     },
     CHAT: {
         NOT_FOUND: 2000,
