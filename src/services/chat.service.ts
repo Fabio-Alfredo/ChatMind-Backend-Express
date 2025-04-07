@@ -1,10 +1,11 @@
 import * as chatRepo from "../repositories/chat.repository";
+import { findById } from "../repositories/boot.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { Chat, CreateChat } from "../interfaces";
+import { Chat, CreateChat, UpdateChat } from "../interfaces";
 import { Schema } from "mongoose";
 
-export const creteChat = async (chat: CreateChat, user:Schema.Types.ObjectId): Promise<Chat> => {
+export const creteChat = async (chat: CreateChat, user: Schema.Types.ObjectId): Promise<Chat> => {
     try {
         const existingChat: Chat | null = await chatRepo.findByName(chat.name);
         if (existingChat) {
@@ -50,7 +51,7 @@ export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Ch
     }
 }
 
-export const updateChat = async (id: string, name: string): Promise<boolean> => {
+export const updateChat = async (id: string, newChat: UpdateChat): Promise<boolean> => {
     try {
         const chat: Chat | null = await chatRepo.findById(id);
         if (!chat) {
@@ -59,7 +60,10 @@ export const updateChat = async (id: string, name: string): Promise<boolean> => 
             );
         }
 
-        const updated = await chatRepo.updateChat(id, name);
+        if (newChat.bot_id)
+            await findById(newChat.bot_id.toString());
+
+        const updated = await chatRepo.updateChat(id, newChat);
         return updated;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",

@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import ChatModel from "../domains/models/chat.model";
-import { Chat, CreateChat } from "../interfaces";
+import { Chat, CreateChat, UpdateChat } from "../interfaces";
 
 export const create = async (chat: CreateChat, user_id: Schema.Types.ObjectId): Promise<Chat> => {
     const newChat = await ChatModel.create({
@@ -25,8 +25,8 @@ export const findByName = async (name: string): Promise<Chat | null> => {
     return chat;
 }
 
-export const updateChat = async (id: string, name: string): Promise<boolean> => {
-    const chat = await ChatModel.findByIdAndUpdate(id, { name }, { new: true });
+export const updateChat = async (id: string, chatData: UpdateChat): Promise<boolean> => {
+    const chat = await ChatModel.findByIdAndUpdate(id, chatData, { new: true });
     return !!chat;
 }
 

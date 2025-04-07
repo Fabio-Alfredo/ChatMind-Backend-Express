@@ -8,4 +8,5 @@ interface Chat {
     messages: mongoose.Schema.Types.ObjectId[];
 }
 type CreateChat = Pick<Chat, | "bot_id" | "name">;
-export { Chat, CreateChat };
+type UpdateChat = Partial<Pick<Chat, "name" | "bot_id">>;
+export { Chat, CreateChat, UpdateChat };
