@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 interface Message {
+    _id: mongoose.Schema.Types.ObjectId;
     chat_id: mongoose.Types.ObjectId;
     user_id: mongoose.Types.ObjectId;
     content: string;
