@@ -15,6 +15,12 @@ chatRoutes.post(
     chatController.createChat
 );
 
+chatRoutes.post(
+    "/prueba",
+    authMiddleware,
+    chatController.createChatMessage
+)
+
 chatRoutes.get(
     "/findId/:id",
     authMiddleware,

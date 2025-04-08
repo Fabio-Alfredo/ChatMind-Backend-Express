@@ -8,4 +8,6 @@ interface Message {
     type: string;
 }
 
-export { Message };
+type CreateMessage = Pick<Message, "chat_id" | "content" | "type">;
+
+export { Message, CreateMessage };

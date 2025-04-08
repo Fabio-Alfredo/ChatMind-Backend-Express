@@ -4,6 +4,7 @@ import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat, CreateMessage, UpdateChat } from "../interfaces";
 import { Schema } from "mongoose";
+import axios from "axios";
 
 export const creteChat = async (chat: CreateChat, user: Schema.Types.ObjectId): Promise<Chat> => {
     try {
@@ -101,6 +102,29 @@ export const addMessages = async (chatId: string, messages: Schema.Types.ObjectI
         const updated: Chat = await chatRepo.save(chat);
 
         return !!updated;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const createRequest = async (chatToken:string, chatUrl:string, message: string): Promise<any> => {
+    try {
+        console.log("Chat Token: ", chatToken);
+        const response = await axios.post(chatUrl,
+            {
+                inputs: message
+            },
+            {
+                headers:{
+                    'Authorization': `Bearer ${chatToken}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+
+        return response.data;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR

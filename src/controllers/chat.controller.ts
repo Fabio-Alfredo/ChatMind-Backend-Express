@@ -108,3 +108,24 @@ export const deleteChat = async (req: Request<{ id: string }>, res: Response, ne
         }
     }
 }
+
+export const createChatMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const chatUrl: string = req.body.chatUrl;
+        const chatToke: string = req.body.chatToken;
+        const message: string = req.body.message;
+        const response = await chatService.createRequest(chatToke, chatUrl, message);
+        return responseHandler(res, "created chat message", 200, response);
+    } catch (e: any) {
+        switch (e.code) {
+            case ErrorCodes.CHAT.NOT_FOUND:
+                next(createHttpError(404, e.message));
+                break;
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
+                next(createHttpError(500, e.message));
+                break;
+            default:
+                next(e);
+        }
+    }
+}
