@@ -2,7 +2,7 @@ import * as chatRepo from "../repositories/chat.repository";
 import { findBotById } from "./bot.service";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { Chat, CreateChat, UpdateChat } from "../interfaces";
+import { Chat, CreateChat, CreateMessage, UpdateChat } from "../interfaces";
 import { Schema } from "mongoose";
 
 export const creteChat = async (chat: CreateChat, user: Schema.Types.ObjectId): Promise<Chat> => {
@@ -82,6 +82,25 @@ export const deleteChat = async (id: string): Promise<boolean> => {
         }
         const deletedChat = await chatRepo.deleteChat(id);
         return deletedChat;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+export const addMessages = async (chatId: string, messages: Schema.Types.ObjectId): Promise<boolean> => {
+    try {
+        const chat: Chat | null = await chatRepo.findById(chatId);
+        if (!chat) {
+            throw new ServiceError("Chat not found",
+                ErrorCodes.CHAT.NOT_FOUND
+            );
+        }
+        chat.messages.push(messages);
+        const updated: Chat = await chatRepo.save(chat);
+
+        return !!updated;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
