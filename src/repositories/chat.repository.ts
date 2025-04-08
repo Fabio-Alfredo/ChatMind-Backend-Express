@@ -10,6 +10,11 @@ export const create = async (chat: CreateChat, user_id: Schema.Types.ObjectId): 
     return newChat;
 }
 
+export const save = async (chat: Chat): Promise<Chat> => {
+    const newChat = await ChatModel.create(chat);
+    return newChat;
+}
+
 export const findById = async (id: string): Promise<Chat | null> => {
     const chat = await ChatModel.findById(id);
     return chat;
