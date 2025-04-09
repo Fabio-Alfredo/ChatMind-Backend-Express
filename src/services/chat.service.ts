@@ -5,6 +5,8 @@ import ErrorCodes from "../utils/error/codes/error.codes";
 import { Chat, CreateChat, CreateMessage, UpdateChat } from "../interfaces";
 import { Schema } from "mongoose";
 import axios from "axios";
+import { createMessage } from "./message.service";
+import { createRequest } from "../utils/requests/http.requests";
 
 export const creteChat = async (chat: CreateChat, user: Schema.Types.ObjectId): Promise<Chat> => {
     try {
@@ -90,18 +92,41 @@ export const deleteChat = async (id: string): Promise<boolean> => {
     }
 }
 
-export const addMessages = async (chatId: string, messages: Schema.Types.ObjectId): Promise<boolean> => {
+export const addMessages = async (messages: CreateMessage, userId: Schema.Types.ObjectId): Promise<string> => {
     try {
-        const chat: Chat | null = await chatRepo.findById(chatId);
+        const chat: Chat | null = await chatRepo.findById(messages.chat_id.toString());
         if (!chat) {
             throw new ServiceError("Chat not found",
                 ErrorCodes.CHAT.NOT_FOUND
             );
         }
-        chat.messages.push(messages);
+        const message = await createMessage(messages, userId);
+
+
+        const bot = await findBotById(chat.bot_id.toString());
+
+        const chatToken = await bot.compareApiToken(bot.apiToken);
+
+        const res = await createRequest(
+            chatToken,
+            bot.apiURL,
+            messages.content
+        );
+
+        const botData = JSON.stringify(res[0]);
+
+        const botMessage: CreateMessage = {
+            chat_id: messages.chat_id,
+            content: botData,
+            sender: "bot",
+            type: "text"
+        }
+        const botResponse = await createMessage(botMessage, userId);
+        chat.messages.push(message._id);
+        chat.messages.push(botResponse._id);
         const updated: Chat = await chatRepo.save(chat);
 
-        return !!updated;
+        return botData;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
@@ -109,25 +134,3 @@ export const addMessages = async (chatId: string, messages: Schema.Types.ObjectI
     }
 }
 
-export const createRequest = async (chatToken:string, chatUrl:string, message: string): Promise<any> => {
-    try {
-        console.log("Chat Token: ", chatToken);
-        const response = await axios.post(chatUrl,
-            {
-                inputs: message
-            },
-            {
-                headers:{
-                    'Authorization': `Bearer ${chatToken}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        )
-
-        return response.data;
-    } catch (e: any) {
-        throw new ServiceError(e.message || "Internal Server Error",
-            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
-        )
-    }
-}

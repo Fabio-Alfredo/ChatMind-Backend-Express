@@ -23,6 +23,7 @@ const messageSchema = new Schema<Message>(
             type:String,
             enum: ["user", "bot"],
             required: true,
+            default: "user",
         }
     },
     {

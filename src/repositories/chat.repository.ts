@@ -21,7 +21,7 @@ export const findById = async (id: string): Promise<Chat | null> => {
 }
 
 export const findAllByUserId = async (userId: Schema.Types.ObjectId): Promise<Chat[]> => {
-    const chats = await ChatModel.find({ user_id: userId });
+    const chats = await ChatModel.find({ user_id: userId }).populate("messages");
     return chats;
 }
 

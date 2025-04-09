@@ -111,10 +111,9 @@ export const deleteChat = async (req: Request<{ id: string }>, res: Response, ne
 
 export const createChatMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const chatUrl: string = req.body.chatUrl;
-        const chatToke: string = req.body.chatToken;
-        const message: string = req.body.message;
-        const response = await chatService.createRequest(chatToke, chatUrl, message);
+        const message = req.body;
+        const user = req.dataUser._id;
+        const response = await chatService.addMessages( message, user);
         return responseHandler(res, "created chat message", 200, response);
     } catch (e: any) {
         switch (e.code) {
