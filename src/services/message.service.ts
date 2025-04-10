@@ -1,7 +1,8 @@
 import * as messageRepo from "../repositories/message.repository";
+import { findChatById } from "./chat.service";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { CreateMessage, Message } from "../interfaces";
+import { Chat, CreateMessage, Message } from "../interfaces";
 import { Schema } from "mongoose";
 
 export const createMessage = async (message: CreateMessage, user_id: Schema.Types.ObjectId): Promise<Message> => {
@@ -17,12 +18,13 @@ export const createMessage = async (message: CreateMessage, user_id: Schema.Type
 
 export const findAllByChatId = async (chatId: string): Promise<Message[]> => {
     try {
-        const messages: Message[] = await messageRepo.findAllByChatId(chatId);
-        if (!messages) {
-            throw new ServiceError("Messages not found",
-                ErrorCodes.MESSAGE.NOT_FOUND
+        const chat: Chat | null = await findChatById(chatId);
+        if (!chat) {
+            throw new ServiceError("Chat not found",
+                ErrorCodes.CHAT.NOT_FOUND
             );
         }
+        const messages: Message[] = await messageRepo.findAllByChatId(chatId);
         return messages;
     } catch (e: any) {
         throw new ServiceError(
