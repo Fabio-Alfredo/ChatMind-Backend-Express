@@ -2,8 +2,8 @@ import * as chatRepo from "../repositories/chat.repository";
 import { findBotById } from "./bot.service";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
-import { Chat, CreateChat, CreateMessage, UpdateChat } from "../interfaces";
-import { Schema } from "mongoose";
+import { Chat, CreateChat, CreateMessage, Message, UpdateChat } from "../interfaces";
+import mongoose, { mongo, Schema } from "mongoose";
 import axios from "axios";
 import { createMessage } from "./message.service";
 import { createRequest } from "../utils/requests/http.requests";
@@ -100,33 +100,49 @@ export const addMessages = async (messages: CreateMessage, userId: Schema.Types.
                 ErrorCodes.CHAT.NOT_FOUND
             );
         }
+        //Creacion de mensage
         const message = await createMessage(messages, userId);
 
-
-        const bot = await findBotById(chat.bot_id.toString());
-
-        const chatToken = await bot.compareApiToken(bot.apiToken);
-
-        const res = await createRequest(
-            chatToken,
-            bot.apiURL,
+        //Pedimos repuesta al bot
+        const chatBot = await botMessage(
+            chat.bot_id.toString(),
+            messages.chat_id,
             messages.content
         );
 
-        const botData = JSON.stringify(res[0]);
 
+        //Creacion del mensaje de respuesta
+        const botResponse = await createMessage(chatBot, userId);
+        chat.messages.push(message._id);
+        chat.messages.push(botResponse._id);
+
+        //Guardar el mensaje en el chat
+        await chatRepo.save(chat);
+
+        return chatBot.content;
+    } catch (e: any) {
+        throw new ServiceError(e.message || "Internal Server Error",
+            e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
+        )
+    }
+}
+
+const botMessage = async (botId: string, chatId: mongoose.Types.ObjectId, message: string): Promise<CreateMessage> => {
+    try {
+        const bot = await findBotById(botId);
+        const chatToken: string = await bot.compareApiToken(bot.apiToken);
+        const res = await createRequest(
+            chatToken,
+            bot.apiURL,
+            message
+        );
         const botMessage: CreateMessage = {
-            chat_id: messages.chat_id,
-            content: botData,
+            chat_id: chatId,
+            content: JSON.stringify(res[0]),
             sender: "bot",
             type: "text"
         }
-        const botResponse = await createMessage(botMessage, userId);
-        chat.messages.push(message._id);
-        chat.messages.push(botResponse._id);
-        const updated: Chat = await chatRepo.save(chat);
-
-        return botData;
+        return botMessage;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
             e.code || ErrorCodes.SERVER.INTERNAL_SERVER_ERROR
