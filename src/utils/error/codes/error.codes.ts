@@ -16,6 +16,10 @@ const ErrorCodes = {
         NOT_FOUND: 3000,
         ALREADY_EXISTS_BOT: 3001,
     },
+    MESSAGE:{
+        NOT_FOUND: 4000,
+        ALREADY_EXISTS: 4001,
+    }
 }
 
 export default ErrorCodes;
