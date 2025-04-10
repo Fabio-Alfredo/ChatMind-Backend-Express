@@ -11,7 +11,7 @@ interface User {
 }
 
 type AuthUser = Pick<User, "email" | "password">;
-type RegisterUser = Pick<User, "name" | "email" | "password" >;
+type RegisterUser = Pick<User, "name" | "email" | "password">;
 type RegisterGoogleUser = Pick<User, "name" | "email" | "authProvider">;
 type TokenPayload = Pick<User, "_id" | "roles">;
 type GooglePayload = Pick<User, "name" | "email">;

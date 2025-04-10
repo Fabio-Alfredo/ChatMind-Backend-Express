@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 interface Chat {
-    _id: mongoose.Schema.Types.ObjectId;
-    user_id: mongoose.Schema.Types.ObjectId;
-    bot_id: mongoose.Schema.Types.ObjectId;
+    _id: Schema.Types.ObjectId;
+    user_id: Schema.Types.ObjectId;
+    bot_id: Schema.Types.ObjectId;
     name: string;
-    messages: mongoose.Schema.Types.ObjectId[];
+    messages: Schema.Types.ObjectId[];
 }
 type CreateChat = Pick<Chat, | "bot_id" | "name">;
 type UpdateChat = Partial<Pick<Chat, "name" | "bot_id">>;

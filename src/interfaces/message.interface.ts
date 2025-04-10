@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 interface Message {
-    _id: mongoose.Schema.Types.ObjectId;
-    chat_id: mongoose.Types.ObjectId;
-    user_id: mongoose.Types.ObjectId;
+    _id: Schema.Types.ObjectId;
+    chat_id: Schema.Types.ObjectId;
+    user_id: Schema.Types.ObjectId;
     content: string;
     sender: "user" | "bot";
     type: string;

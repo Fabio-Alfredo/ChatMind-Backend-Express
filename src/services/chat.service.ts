@@ -127,7 +127,7 @@ export const addMessages = async (messages: CreateMessage, userId: Schema.Types.
     }
 }
 
-const botMessage = async (botId: string, chatId: mongoose.Types.ObjectId, message: string): Promise<CreateMessage> => {
+const botMessage = async (botId: string, chatId: Schema.Types.ObjectId, message: string): Promise<CreateMessage> => {
     try {
         const bot = await findBotById(botId);
         const chatToken: string = await bot.compareApiToken(bot.apiToken);
