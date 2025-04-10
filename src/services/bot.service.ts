@@ -2,7 +2,6 @@ import * as BotRepo from "../repositories/boot.repository";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Bot, CreateBot, TokenPayload, UpdateBot } from "../interfaces";
-import { Schema } from "mongoose";
 
 export const create = async (bot: CreateBot, user: TokenPayload): Promise<Bot> => {
     try {

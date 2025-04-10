@@ -3,7 +3,6 @@ import { Bot, CreateBot, UpdateBot } from "../interfaces";
 import { Schema } from 'mongoose';
 
 export const create = async (bot: CreateBot, createBy: Schema.Types.ObjectId): Promise<Bot> => {
-    console.log("aca esta el peo", bot)
     const newBot = await BotModel.create({ createBy, ...bot });
     return newBot;
 }
