@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as chatController from "../controllers/chat.controller";
 import validatorMiddleware from "../middleware/validator.middleware";
 import { authMiddleware, roleMiddleware } from "../middleware/auth.middleware";
-import { createValidator, findByIdValidator, updateValidator } from "../validators/chat.validator";
+import { createValidator, findByIdValidator, updateValidator, createMessagesValidator } from "../validators/chat.validator";
 
 const chatRoutes = Router();
 
@@ -16,8 +16,10 @@ chatRoutes.post(
 );
 
 chatRoutes.post(
-    "/prueba",
+    "/messages",
     authMiddleware,
+    createMessagesValidator,
+    validatorMiddleware,
     chatController.createChatMessage
 )
 

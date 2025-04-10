@@ -46,3 +46,34 @@ export const findByIdValidator = [
         .withMessage("id must be a valid MongoDB ObjectId")
         .bail()
 ]
+
+
+export const createMessagesValidator = [
+    body("chat_id")
+        .exists()
+        .trim()
+        .withMessage("chat_id is required")
+        .isMongoId()
+        .withMessage("chat_id must be a valid MongoDB ObjectId")
+        .bail(),
+
+    body("content")
+        .exists()
+        .trim()
+        .withMessage("content is required")
+        .isString()
+        .withMessage("content must be a string")
+        .isLength({ min: 1 })
+        .withMessage("content must be at least 1 character long")
+        .bail(),
+    body("type")
+        .exists()
+        .trim()
+        .withMessage("type is required")
+        .isString()
+        .withMessage("type must be a string")
+        .isLength({ min: 1 })
+        .withMessage("type must be at least 1 character long")
+        .bail(),
+
+]
