@@ -1,4 +1,5 @@
 import * as chatService from '../services/chat.service';
+import { findAllByChatId } from '../services/message.service';
 import createHttpError from 'http-errors';
 import { Request, Response, NextFunction } from 'express';
 import { Chat, CreateChat, UpdateChat } from '../interfaces';
@@ -113,8 +114,27 @@ export const createChatMessage = async (req: Request, res: Response, next: NextF
     try {
         const message = req.body;
         const user = req.dataUser._id;
-        const response = await chatService.addMessages( message, user);
+        const response = await chatService.addMessages(message, user);
         return responseHandler(res, "created chat message", 200, response);
+    } catch (e: any) {
+        switch (e.code) {
+            case ErrorCodes.CHAT.NOT_FOUND:
+                next(createHttpError(404, e.message));
+                break;
+            case ErrorCodes.SERVER.INTERNAL_SERVER_ERROR:
+                next(createHttpError(500, e.message));
+                break;
+            default:
+                next(e);
+        }
+    }
+}
+
+export const getMessagesByChat = async (req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const chatId = req.params.id;
+        const messages = await findAllByChatId(chatId);
+        return responseHandler(res, "found messages", 200, messages);
     } catch (e: any) {
         switch (e.code) {
             case ErrorCodes.CHAT.NOT_FOUND:
