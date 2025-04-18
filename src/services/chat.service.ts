@@ -3,8 +3,7 @@ import { findBotById } from "./bot.service";
 import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { Bot, Chat, CreateChat, CreateMessage, Message, UpdateChat } from "../interfaces";
-import mongoose, { mongo, Schema } from "mongoose";
-import axios from "axios";
+import { Schema } from "mongoose";
 import { createMessage } from "./message.service";
 import { createRequest } from "../utils/requests/http.requests";
 
@@ -16,7 +15,7 @@ export const creteChat = async (chat: CreateChat, user: Schema.Types.ObjectId): 
                 ErrorCodes.CHAT.ALREADY_EXISTS
             );
         }
-        const newChat:Chat = await chatRepo.create(chat, user);
+        const newChat: Chat = await chatRepo.create(chat, user);
         return newChat;
     } catch (e: any) {
         throw new ServiceError(e.message || "Internal Server Error",
@@ -101,10 +100,10 @@ export const addMessages = async (messages: CreateMessage, userId: Schema.Types.
             );
         }
         //Creacion de mensage
-        const message:Message = await createMessage(messages, userId);
+        const message: Message = await createMessage(messages, userId);
 
         //Pedimos repuesta al bot
-        const chatBot:CreateMessage = await botMessage(
+        const chatBot: CreateMessage = await botMessage(
             chat.bot_id.toString(),
             messages.chat_id,
             messages.content
@@ -112,7 +111,7 @@ export const addMessages = async (messages: CreateMessage, userId: Schema.Types.
 
 
         //Creacion del mensaje de respuesta
-        const botResponse:Message = await createMessage(chatBot, userId);
+        const botResponse: Message = await createMessage(chatBot, userId);
         chat.messages.push(message._id);
         chat.messages.push(botResponse._id);
 
@@ -129,9 +128,9 @@ export const addMessages = async (messages: CreateMessage, userId: Schema.Types.
 
 const botMessage = async (botId: string, chatId: Schema.Types.ObjectId, message: string): Promise<CreateMessage> => {
     try {
-        const bot:Bot= await findBotById(botId);
+        const bot: Bot = await findBotById(botId);
         const chatToken: string = await bot.compareApiToken(bot.apiToken);
-        const res :string = await createRequest(
+        const res: string = await createRequest(
             chatToken,
             bot.apiURL,
             message
