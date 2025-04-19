@@ -1,7 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { User } from '../../interfaces';
 import bcrypt from 'bcryptjs';
 import { AUTH_PROVIDERS } from '../../utils/constants/autProvider.constant';
+import { roles } from '../../types/roles.types';
 
 const userSchema = new Schema<User>(
     {
@@ -29,6 +30,8 @@ const userSchema = new Schema<User>(
         roles: {
             type: [String],
             default: ["user"],
+            enum: roles,
+            set: () => ["user"]
         },
         authProvider: {
             type: String,
