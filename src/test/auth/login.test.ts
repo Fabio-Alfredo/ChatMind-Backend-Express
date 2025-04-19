@@ -1,8 +1,8 @@
 import request from 'supertest';
 import app from "../../../app"
-import e from 'express';
 
-describe("Login route", () => {
+
+describe("Logueo de un usuario", () => {
 
     //Se crea un usuario para las pruebas y no depender de los datos de la db
     //o de otro test

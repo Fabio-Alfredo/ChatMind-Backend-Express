@@ -1,7 +1,7 @@
 import request from "supertest"
 import app from "../../../app";
 
-describe("Register route", () => {
+describe("Registro de un usuario", () => {
 
     test("Debe devolver status 201 y un mensaje de exito si el usuario se crea correctamente", async () => {
         const response = await request(app).post("/user/create").send({
