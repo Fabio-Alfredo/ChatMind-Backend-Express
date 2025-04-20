@@ -8,7 +8,7 @@ export const create = async (user: RegisterUser | RegisterGoogleUser): Promise<U
     return newUser;
 }
 
-export const findById = async (id: Schema.Types.ObjectId): Promise<User | null> => {
+export const findById = async (id: string): Promise<User | null> => {
     const user = await UserModel.findById(id);
     return user;
 }
