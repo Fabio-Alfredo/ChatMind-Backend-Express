@@ -25,6 +25,11 @@ export const findByEmail = async (email: string): Promise<User | null> => {
 }
 
 export const updateRole = async (id: Schema.Types.ObjectId, role: Roles): Promise<User | null> => {
-    const user = await UserModel.findByIdAndUpdate(id, { role }, { new: true });
+    const user = await UserModel.findByIdAndUpdate(id, { $addToSet: { roles: role } }, { new: true });
+    return user;
+}
+
+export const delteRole = async (id: Schema.Types.ObjectId, role: Roles): Promise<User | null> => {
+    const user = await UserModel.findByIdAndUpdate(id, { $pull: { roles: role } }, { new: true });
     return user;
 }
