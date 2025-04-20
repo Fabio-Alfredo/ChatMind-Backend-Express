@@ -7,6 +7,7 @@ const ErrorCodes = {
         INVALID_CREDENTIALS: 1001,
         INVALID_GOOGLE_TOKEN: 1002,
         NOT_FOUND: 1003,
+        ALREADY_HAS_ROLE: 1004,
     },
     CHAT: {
         NOT_FOUND: 2000,
