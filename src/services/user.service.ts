@@ -3,10 +3,9 @@ import ServiceError from "../utils/error/service.error";
 import ErrorCodes from "../utils/error/codes/error.codes";
 import { User } from "../interfaces";
 import { Roles } from "../types/roles.types";
+import { actions } from "../types/actionsRoles.types";
 
-type actions = "addRole" | "deleteRole";
-
-export const addRole = async (id: string, role: Roles, action: actions): Promise<User> => {
+export const updateRoles = async (id: string, role: Roles, action: actions): Promise<User> => {
     try {
         const user: User | null = await userRepo.findById(id);
         if (!user) {
